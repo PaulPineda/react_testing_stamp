@@ -10,7 +10,10 @@ import CommentList from '../../src/components/CommentList';
 //   shallow,
 //   spyLifecycle
 // } from 'enzyme';
-import { mount } from 'enzyme'
+import {
+  mount,
+  shallow
+} from 'enzyme'
 import { spy } from 'sinon';
 
 describe('(Component) CommentList', () =>{
@@ -47,4 +50,25 @@ describe('(Component) CommentList', () =>{
       expect(props.onMount.calledOnce).to.be.true;
     });
   //});
+    it('should render aas a <ul>', () =>{
+      const props = { onMount: () => {} };
+      const wrapper = shallow(<CommentList {...props} />);
+      expect(wrapper.type()).to.eql('ul');
+    });
+
+    describe('when active...', () =>{
+      const wrapper = shallow(<CommentList onMount={() => {}} isActive />);
+
+      it('should render with className active-list', () =>{
+        expect(wrapper.prop('className')).to.eql('active-list');
+      });
+    });
+
+    describe('when inactive...', () =>{
+      const wrapper = shallow(<CommentList onMount={() => {}} isActive={false} />);
+
+      it('should render with className inactive-list', () =>{
+        expect(wrapper.prop('className')).to.eql('inactive-list');
+      });
+    });
 });
